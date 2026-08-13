@@ -1,1 +1,146 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>АРМ Конструктора СТО</title>
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+    <div id="app">
+        <!-- ============================================ -->
+        <!-- ЗАГОЛОВОК ОКНА -->
+        <!-- ============================================ -->
+        <header class="window-header">
+            <div class="title-bar">
+                <span class="window-title">АРМ Конструктора СТО — План ТПП (текущий)</span>
+                <div class="window-controls">
+                    <button class="win-btn" title="Свернуть">─</button>
+                    <button class="win-btn" title="Развернуть">☐</button>
+                    <button class="win-btn close" title="Закрыть">✕</button>
+                </div>
+            </div>
+            <div class="menu-bar">
+                <span class="menu-item">План ТПП</span>
+                <span class="menu-item">Позиция</span>
+                <span class="menu-item">Режим</span>
+                <span class="menu-item">Справка</span>
+            </div>
+        </header>
 
+        <!-- ============================================ -->
+        <!-- ПАНЕЛЬ ИНСТРУМЕНТОВ -->
+        <!-- ============================================ -->
+        <div class="toolbar">
+            <div class="toolbar-group">
+                <button class="tool-btn" id="btnRefresh" title="Обновить">🔄</button>
+                <button class="tool-btn" id="btnCreate" title="Создать">➕</button>
+                <button class="tool-btn" id="btnEdit" title="Редактировать">✏️</button>
+                <button class="tool-btn" id="btnDelete" title="Удалить">🗑️</button>
+                <button class="tool-btn" id="btnPrint" title="Печать">🖨️</button>
+            </div>
+            <div class="toolbar-group">
+                <select id="statusFilter" class="filter-select">
+                    <option value="all">Все записи</option>
+                    <option value="new">Новые</option>
+                    <option value="in_work">В работе</option>
+                    <option value="completed">Выполненные</option>
+                </select>
+            </div>
+            <div class="toolbar-group search-group">
+                <input type="text" id="searchInput" placeholder="Поиск..." />
+                <button class="tool-btn" id="btnSearch" title="Поиск">🔍</button>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- ОСНОВНАЯ ЧАСТЬ -->
+        <!-- ============================================ -->
+        <div class="main-content">
+            <!-- Левая панель -->
+            <nav class="left-panel">
+                <div class="mode-item active" data-mode="plan">
+                    <span class="mode-icon">📋</span>
+                    <span class="mode-label">План ТПП</span>
+                    <span class="mode-badge" id="badgePlan">0</span>
+                </div>
+                <div class="mode-item" data-mode="tasks">
+                    <span class="mode-icon">📝</span>
+                    <span class="mode-label">Список работ исполнителя</span>
+                    <span class="mode-badge" id="badgeTasks">0</span>
+                </div>
+                <div class="mode-item" data-mode="specs">
+                    <span class="mode-icon">📂</span>
+                    <span class="mode-label">Спецификации КГ СТО</span>
+                    <span class="mode-badge" id="badgeSpecs">0</span>
+                </div>
+                <div class="mode-item" data-mode="archive">
+                    <span class="mode-icon">📦</span>
+                    <span class="mode-label">Архив ТЗ на СТО</span>
+                    <span class="mode-badge" id="badgeArchive">0</span>
+                </div>
+            </nav>
+
+            <!-- Правая область -->
+            <div class="content-area">
+                <div id="tableContainer">
+                    <table id="dataTable">
+                        <thead>
+                            <tr id="tableHeader"></tr>
+                        </thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                </div>
+                <div id="treeContainer" style="display: none;">
+                    <div id="treeView"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- СТРОКА СОСТОЯНИЯ -->
+        <!-- ============================================ -->
+        <footer class="status-bar">
+            <span id="statusRecords">Записей: 0</span>
+            <span id="statusAccess">Доступ: Чтение/Запись</span>
+            <span id="statusUser">Пользователь: Иванов И.И.</span>
+            <span id="statusServer">Сервер: Firebase</span>
+            <span id="statusDB">БД: Realtime</span>
+            <span id="statusMode">Режим: План ТПП</span>
+        </footer>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- МОДАЛЬНОЕ ОКНО -->
+    <!-- ============================================ -->
+    <div id="modalOverlay" style="display: none;">
+        <div class="modal-window">
+            <div class="modal-header">
+                <span id="modalTitle">Заголовок</span>
+                <button class="modal-close" id="modalClose">✕</button>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="modalSave">Сохранить</button>
+                <button class="btn btn-secondary" id="modalCancel">Отмена</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- УВЕДОМЛЕНИЯ -->
+    <!-- ============================================ -->
+    <div id="notificationContainer"></div>
+
+    <!-- ============================================ -->
+    <!-- ПОДКЛЮЧЕНИЕ СКРИПТОВ -->
+    <!-- ============================================ -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="js/db.js"></script>
+    <script src="js/modes.js"></script>
+    <script src="js/components.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
